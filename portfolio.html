@@ -1,0 +1,682 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Vitor Henrique</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Space+Mono:wght@400;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sakura:#E8C5C5;
+  --sakura-deep:#C49A9A;
+  --mist:#B8C4D4;
+  --moonlight:#D4D0E8;
+  --paper:#F5F0E8;
+  --ink:#2C2420;
+  --sage:#8FAF8F;
+  --gold:#C4A862;
+}
+body{
+  background:linear-gradient(160deg,#1a1625 0%,#2d1f2e 30%,#1f2d35 60%,#152028 100%);
+  min-height:100vh;
+  font-family:'Nunito',sans-serif;
+  color:#f0e8d8;
+  overflow-x:hidden;
+}
+
+/* ── Noise overlay ── */
+.noise{
+  position:fixed;inset:0;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* ── Sakura petals ── */
+.sakura-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.petal{
+  position:absolute;width:8px;height:8px;
+  background:radial-gradient(ellipse,#E8C5C5,#c49a9a88);
+  border-radius:50% 0 50% 0;opacity:0;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:.6}
+  100%{transform:translateY(110vh) rotate(360deg);opacity:0}
+}
+
+/* ── Floating orbs ── */
+.floating-orb{position:fixed;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0;opacity:.12}
+.orb1{width:400px;height:400px;background:radial-gradient(#c49a9a,transparent);top:-100px;right:-100px}
+.orb2{width:300px;height:300px;background:radial-gradient(#8a8ac0,transparent);bottom:10%;left:-100px}
+.orb3{width:200px;height:200px;background:radial-gradient(#8faf8f,transparent);top:50%;right:20%}
+
+/* ── Navigation ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:1rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  backdrop-filter:blur(12px);
+  background:rgba(26,22,37,0.6);
+  border-bottom:1px solid rgba(232,197,197,0.1);
+}
+.nav-logo{font-family:'Noto Serif JP',serif;font-size:1.1rem;color:var(--sakura);letter-spacing:.2em}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{
+  color:rgba(240,232,216,0.6);text-decoration:none;
+  font-size:.85rem;letter-spacing:.1em;transition:.3s;cursor:pointer;
+}
+.nav-links a:hover{color:var(--sakura)}
+
+/* ── Layout ── */
+main{padding-top:60px}
+section{padding:5rem 2rem;max-width:900px;margin:0 auto;position:relative;z-index:1}
+
+/* ── Hero ── */
+.hero{min-height:90vh;display:flex;flex-direction:column;justify-content:center;padding-top:80px}
+.hero-tag{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--sage);letter-spacing:.3em;margin-bottom:1.5rem;opacity:.8}
+.hero-name{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(2.5rem,6vw,4.5rem);
+  font-weight:300;line-height:1.1;margin-bottom:1rem;
+  background:linear-gradient(135deg,#f0e8d8 0%,var(--sakura) 50%,var(--moonlight) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-role{font-size:1rem;color:rgba(240,232,216,0.5);letter-spacing:.15em;margin-bottom:2rem;font-weight:300}
+.hero-desc{max-width:480px;line-height:1.9;color:rgba(240,232,216,0.7);font-size:.95rem;margin-bottom:3rem}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+
+/* ── Buttons ── */
+.btn{
+  padding:.7rem 1.8rem;border-radius:2px;font-size:.85rem;
+  letter-spacing:.1em;cursor:pointer;transition:.3s;
+  font-family:'Nunito',sans-serif;text-decoration:none;display:inline-block;
+}
+.btn-primary{background:var(--sakura-deep);color:#1a1625;border:none;font-weight:600}
+.btn-primary:hover{background:var(--sakura);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--sakura);border:1px solid rgba(232,197,197,0.4)}
+.btn-outline:hover{border-color:var(--sakura);background:rgba(232,197,197,0.05);transform:translateY(-2px)}
+
+/* ── Section headers ── */
+.section-label{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--sage);letter-spacing:.3em;margin-bottom:.5rem}
+.section-title{
+  font-family:'Noto Serif JP',serif;font-size:1.8rem;font-weight:300;
+  color:var(--sakura);margin-bottom:3rem;
+  padding-bottom:1rem;border-bottom:1px solid rgba(232,197,197,0.15);
+}
+
+/* ── Divider ── */
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(232,197,197,0.2),transparent);margin:2rem 0}
+
+/* ── Bio ── */
+.bio-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+@media(max-width:600px){.bio-grid{grid-template-columns:1fr}}
+.bio-text{line-height:1.9;color:rgba(240,232,216,0.75);font-size:.95rem}
+.bio-avatar{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.avatar-frame{
+  width:160px;height:160px;border-radius:2px;
+  border:1px solid rgba(232,197,197,0.3);
+  position:relative;overflow:hidden;cursor:pointer;
+  background:rgba(232,197,197,0.05);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;
+  transition:.3s;
+}
+.avatar-frame:hover{border-color:rgba(232,197,197,0.6);background:rgba(232,197,197,0.08)}
+.avatar-frame img{width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0}
+.avatar-placeholder{color:rgba(232,197,197,0.4);font-size:.75rem;text-align:center;letter-spacing:.05em;padding:1rem}
+.avatar-icon{font-size:2rem;opacity:.3}
+.avatar-upload-hint{font-size:.7rem;color:rgba(232,197,197,0.3);text-align:center;letter-spacing:.05em}
+.info-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.chip{
+  padding:.3rem .8rem;border:1px solid rgba(184,196,212,0.3);border-radius:2px;
+  font-size:.75rem;color:rgba(184,196,212,0.8);letter-spacing:.05em;
+  cursor:text;outline:none;transition:.2s;
+}
+.chip:focus{border-color:rgba(184,196,212,0.6)}
+
+/* ── Skills ── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem}
+.skill-category{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(232,197,197,0.1);
+  border-radius:2px;padding:1.5rem;
+}
+.skill-category-title{
+  font-family:'Space Mono',monospace;font-size:.7rem;
+  color:var(--gold);letter-spacing:.2em;margin-bottom:1rem;
+  outline:none;cursor:text;
+}
+.skill-item{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.skill-dot{width:6px;height:6px;border-radius:50%;background:var(--sakura-deep);flex-shrink:0}
+.skill-name{font-size:.85rem;color:rgba(240,232,216,0.7);outline:none;cursor:text;flex-shrink:0}
+.skill-bar{flex:1;height:2px;background:rgba(255,255,255,0.08);border-radius:1px;overflow:hidden}
+.skill-fill{
+  height:100%;border-radius:1px;
+  background:linear-gradient(90deg,var(--sakura-deep),var(--moonlight));
+  cursor:ew-resize;position:relative;
+}
+.skill-fill::after{
+  content:'';position:absolute;right:0;top:-4px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--moonlight);opacity:0;transition:.2s;
+}
+.skill-fill:hover::after{opacity:.6}
+
+/* ── Projects ── */
+.projects-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem}
+.project-card{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(232,197,197,0.12);
+  border-radius:2px;overflow:hidden;
+  transition:border-color .3s,transform .3s;
+  position:relative;
+}
+.project-card:hover{border-color:rgba(232,197,197,0.3);transform:translateY(-4px)}
+.card-img{
+  height:160px;
+  background:linear-gradient(135deg,rgba(180,160,200,0.15),rgba(140,175,185,0.15));
+  position:relative;overflow:hidden;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;
+  transition:.3s;
+}
+.card-img:hover{background:linear-gradient(135deg,rgba(180,160,200,0.25),rgba(140,175,185,0.25))}
+.card-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.card-img-placeholder{color:rgba(232,197,197,0.3);font-size:.7rem;text-align:center;letter-spacing:.05em;position:relative;z-index:1}
+.card-img-icon{font-size:1.5rem;opacity:.25;position:relative;z-index:1}
+.card-body{padding:1.25rem}
+
+.card-links{display:flex;gap:.75rem;margin-top:1rem;padding-top:.75rem;border-top:1px solid rgba(232,197,197,0.08)}
+.card-link-group{flex:1;min-width:0}
+.card-link-label{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--sage);letter-spacing:.1em;margin-bottom:.25rem}
+.card-link-input{
+  background:transparent;border:none;outline:none;
+  font-family:'Space Mono',monospace;font-size:.68rem;
+  color:rgba(184,196,212,0.5);width:100%;cursor:text;transition:.2s;
+}
+.card-link-input:focus{color:rgba(184,196,212,0.9)}
+.card-link-btn{
+  font-family:'Space Mono',monospace;font-size:.65rem;
+  padding:.25rem .6rem;border:1px solid rgba(184,196,212,0.2);
+  background:transparent;color:rgba(184,196,212,0.5);
+  cursor:pointer;border-radius:2px;transition:.2s;white-space:nowrap;
+}
+.card-link-btn:hover{border-color:rgba(184,196,212,0.5);color:rgba(184,196,212,0.9)}
+.card-title-static{
+  font-family:'Noto Serif JP',serif;font-size:1rem;font-weight:400;
+  color:#f0e8d8;margin-bottom:.5rem;
+}
+.card-desc-static{
+  font-size:.82rem;color:rgba(240,232,216,0.55);
+  line-height:1.7;margin-bottom:.25rem;
+}
+.card-link-static{
+  font-family:'Space Mono',monospace;font-size:.68rem;
+  color:rgba(184,196,212,0.5);
+}
+.add-card-btn{
+  border:1px dashed rgba(232,197,197,0.2);border-radius:2px;
+  padding:2rem;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.75rem;
+  cursor:pointer;transition:.3s;color:rgba(232,197,197,0.3);
+  min-height:280px;background:transparent;
+}
+.add-card-btn:hover{border-color:rgba(232,197,197,0.4);color:rgba(232,197,197,0.6);background:rgba(232,197,197,0.02)}
+.add-icon{font-size:1.5rem}
+.add-text{font-size:.75rem;letter-spacing:.1em;font-family:'Space Mono',monospace}
+
+/* ── Contact ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+@media(max-width:600px){.contact-grid{grid-template-columns:1fr}}
+.contact-text{color:rgba(240,232,216,0.6);line-height:1.9;font-size:.95rem;margin-bottom:2rem}
+.contact-links{display:flex;flex-direction:column;gap:1rem}
+.contact-item{
+  display:flex;align-items:center;gap:1rem;padding:1rem;
+  border:1px solid rgba(232,197,197,0.1);border-radius:2px;
+  transition:.3s;cursor:pointer;text-decoration:none;
+}
+.contact-item:hover{border-color:rgba(232,197,197,0.3);background:rgba(232,197,197,0.03)}
+.contact-icon{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(232,197,197,0.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0;
+}
+.contact-info .label{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--sage);letter-spacing:.15em}
+.contact-value-input{
+  background:transparent;border:none;outline:none;
+  font-size:.85rem;color:rgba(240,232,216,0.7);
+  width:100%;font-family:'Nunito',sans-serif;margin-top:.15rem;
+}
+
+/* ── Edit hint ── */
+.edit-hint{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.65rem;color:rgba(232,197,197,0.3);letter-spacing:.05em;
+  font-family:'Space Mono',monospace;margin-bottom:3rem;
+  padding:.4rem .8rem;border:1px solid rgba(232,197,197,0.1);border-radius:2px;
+}
+
+/* ── Footer ── */
+footer{
+  text-align:center;padding:3rem 2rem;
+  border-top:1px solid rgba(232,197,197,0.08);
+  color:rgba(240,232,216,0.25);font-size:.75rem;
+  letter-spacing:.1em;font-family:'Space Mono',monospace;
+  position:relative;z-index:1;
+}
+
+/* ── Skill drag tooltip ── */
+.skill-tooltip{
+  position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);
+  background:rgba(26,22,37,0.9);border:1px solid rgba(232,197,197,0.2);
+  color:rgba(232,197,197,0.7);font-family:'Space Mono',monospace;
+  font-size:.65rem;letter-spacing:.1em;padding:.4rem 1rem;border-radius:2px;
+  pointer-events:none;z-index:200;opacity:0;transition:opacity .3s;
+}
+
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="floating-orb orb1"></div>
+<div class="floating-orb orb2"></div>
+<div class="floating-orb orb3"></div>
+<div class="sakura-bg" id="sakuraBg"></div>
+<div class="skill-tooltip" id="skillTooltip"></div>
+
+<!-- ── Navigation ── -->
+<nav>
+  <div class="nav-logo">ポートフォリオ</div>
+  <div class="nav-links">
+    <a onclick="scrollToSection('bio')">Bio</a>
+    <a onclick="scrollToSection('skills')">Skills</a>
+    <a onclick="scrollToSection('projects')">Projects</a>
+    <a onclick="scrollToSection('contact')">Contact</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-tag">// Computer Engineering</div>
+  <h1 class="hero-name" contenteditable="true">Vitor Henrique C. Morais</h1>
+  <div class="hero-role" contenteditable="true">Robotics · Development · Engineering · Scientific Research</div>
+  <p class="hero-desc" contenteditable="true">Computer Engineering student passionate about robotics, technology, and research. I enjoy building innovative solutions through software and hardware integration, exploring new ideas, and contributing to projects that create real-world impact.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" onclick="scrollToSection('projects')">See Projects</a>
+    <a class="btn btn-outline" onclick="scrollToSection('contact')">Contact</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Bio ── -->
+<section id="bio">
+  <div class="section-label">// 01 — About Me</div>
+  <div class="section-title">Bio — Vitor Henrique Carvalho de Morais</div>
+  <div class="bio-grid">
+    <div>
+      <p class="bio-text" contenteditable="true">
+        Computer Engineering student passionate about technology, innovation, and problem-solving. My academic and professional
+        journey has been shaped by experiences in scientific research, robotics, software development, and interdisciplinary
+        engineering projects.<br><br>
+        Currently, I'm involved in research and development activities at UFU-LASEC, where I contribute to projects that integrate
+        hardware and software, transforming ideas into practical and intelligent solutions. Throughout my studies, I've worked on projects
+        ranging from control systems, always seeking to expand my technical knowledge and develop impactful technologies.<br><br>
+        I enjoy learning new technologies, tackling complex challenges, and collaborating on projects that combine creativity, engineering,
+        and innovation. I believe technology is a powerful tool for driving progress, improving people's lives, and creating meaningful solutions
+        for real-world problems.
+      </p>
+      <div class="info-chips" id="chips">
+        <div class="chip" contenteditable="true">UFU — Comp. Eng.</div>
+        <div class="chip" contenteditable="true">LASEC Lab</div>
+        <div class="chip" contenteditable="true">Brasil 🌿</div>
+        <div class="chip" contenteditable="true">+ add</div>
+      </div>
+    </div>
+    <div class="bio-avatar">
+      <div class="avatar-frame" id="avatarFrame">
+        <div class="avatar-icon" id="avatarIcon">🌸</div>
+        <img id="avatarImg" alt="profile photo">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Skills ── -->
+<section id="skills">
+  <div class="section-label">// 02 — My Skills</div>
+  <div class="section-title">Skills</div>
+  <div class="skills-grid" id="skillsGrid">
+
+    <div class="skill-category">
+      <div class="skill-category-title" contenteditable="true">ROBOTICS</div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">ROS / ROS2</span><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">Arduino / Raspberry Pi</span><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">Computer Vision</span><div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div></div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">SLAM</span><div class="skill-bar"><div class="skill-fill" style="width:60%"></div></div></div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-category-title" contenteditable="true">WEB DEV</div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">Python / Flask</span><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">HTML / CSS / JS</span><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">React</span><div class="skill-bar"><div class="skill-fill" style="width:65%"></div></div></div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">Node.js</span><div class="skill-bar"><div class="skill-fill" style="width:60%"></div></div></div>
+    </div>
+
+    <div class="skill-category">
+      <div class="skill-category-title" contenteditable="true">RESEARCH / AI</div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">Machine Learning</span><div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div></div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">NumPy / Pandas</span><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">LaTeX</span><div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div></div>
+      <div class="skill-item"><div class="skill-dot"></div><span class="skill-name" contenteditable="true">Git / GitHub</span><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Projects ── -->
+<section id="projects">
+  <div class="section-label">// 03 — My Projects</div>
+  <div class="projects-header">
+    <div class="section-title" style="margin-bottom:0;border:none;padding:0">Projects</div>
+  </div>
+  <div class="projects-grid" id="projectsGrid"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Contact ── -->
+<section id="contact">
+  <div class="section-label">// 04 — Contacts</div>
+  <div class="section-title">Get In Touch</div>
+  <div class="contact-grid">
+    <div>
+      <p class="contact-text" contenteditable="true">Open to collaborations in robotics, scientific research, and web development. If you have an interesting idea, let's talk!</p>
+      <a class="btn btn-primary" id="emailBtn" href="mailto:vhcmorais04@gmail.com">Send Email</a>
+    </div>
+    <div class="contact-links">
+      <div class="contact-item" id="githubItem">
+        <div class="contact-icon">🐙</div>
+        <div class="contact-info">
+          <div class="label">GITHUB</div>
+          <input class="contact-value-input" id="githubVal" value="github.com/Vhcmorais">
+        </div>
+      </div>
+      <div class="contact-item" id="emailItem">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-info">
+          <div class="label">EMAIL</div>
+          <input class="contact-value-input" id="emailVal" value="vhcmorais04@gmail.com">
+        </div>
+      </div>
+      <div class="contact-item" id="linkedinItem">
+        <div class="contact-icon">💼</div>
+        <div class="contact-info">
+          <div class="label">LINKEDIN</div>
+          <input class="contact-value-input" id="linkedinVal" value="linkedin.com/in/vitor-henrique-carvalho-de-morais-aa5ab12b8/">
+        </div>
+      </div>
+      <div class="contact-item" id="instagramItem">
+        <div class="contact-icon">📷</div>
+        <div class="contact-info">
+          <div class="label">INSTAGRAM</div>
+          <input class="contact-value-input" id="instagramVal" value="@vhcmoorais">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div>Made by — <span contenteditable="true">Vitor Henrique</span> · <span id="year"></span></div>
+</footer>
+
+<script>
+// ── Ano no footer ──
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// ── Scroll suave ──
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Pétalas de sakura ──
+const sakura = document.getElementById('sakuraBg');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*-100}px;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*8}s;opacity:0;transform:rotate(${Math.random()*360}deg) scale(${0.6+Math.random()*.8})`;
+  sakura.appendChild(p);
+}
+
+// ── Avatar — carregado via CONFIG abaixo ──
+function loadAvatar(src) {
+  if (!src || src.trim() === '') return;
+
+  const img = document.getElementById('avatarImg');
+  img.src = src;
+  img.style.display = 'block';
+
+  const placeholder = document.getElementById('avatarPlaceholder');
+  const icon = document.getElementById('avatarIcon');
+
+  if (placeholder) placeholder.style.display = 'none';
+  if (icon) icon.style.display = 'none';
+}
+
+// ── Skill bars draggáveis ──
+const tooltip = document.getElementById('skillTooltip');
+let dragging = null;
+
+document.querySelectorAll('.skill-fill').forEach(fill => {
+  fill.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    dragging = fill;
+    tooltip.style.opacity = '1';
+  });
+});
+
+document.addEventListener('mousemove', function(e) {
+  if (!dragging) return;
+  const bar = dragging.parentElement;
+  const rect = bar.getBoundingClientRect();
+  const pct = Math.min(100, Math.max(4, ((e.clientX - rect.left) / rect.width) * 100));
+  dragging.style.width = pct.toFixed(0) + '%';
+  tooltip.textContent = pct.toFixed(0) + '%';
+});
+
+document.addEventListener('mouseup', function() {
+  if (dragging) { tooltip.style.opacity = '0'; dragging = null; }
+});
+
+// ── Abrir link do card ──
+function openCardLink(btn, type) {
+  const body = btn.closest('.card-body');
+  const inputs = body.querySelectorAll('.card-link-input');
+  const url = type === 'github' ? inputs[0].value : inputs[1].value;
+  if (!url) return;
+  const full = url.startsWith('http') ? url : 'https://' + url;
+  window.open(full, '_blank');
+}
+
+// ── Criar card de projeto ──
+function createCard(data = {}) {
+  const card = document.createElement('div');
+  card.className = 'project-card';
+
+  // imagem
+  const imgDiv = document.createElement('div');
+  imgDiv.className = 'card-img';
+  if (data.img && data.img.trim() !== '') {
+    const img = document.createElement('img');
+    img.src = data.img;
+    img.alt = 'imagem do projeto';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0';
+    imgDiv.appendChild(img);
+  } else {
+    imgDiv.innerHTML = '<div class="card-img-icon">🖼</div><div class="card-img-placeholder">adicione a URL no campo<br>img: do código</div>';
+  }
+
+  // body
+  const body = document.createElement('div');
+  body.className = 'card-body';
+
+  const title = document.createElement('div');
+  title.className = 'card-title-static';
+  title.textContent = data.title || 'Nome do Projeto';
+
+  const desc = document.createElement('div');
+  desc.className = 'card-desc-static';
+  desc.textContent = data.desc || 'Descrição breve do projeto.';
+
+  const links = document.createElement('div');
+  links.className = 'card-links';
+
+  const ghGroup = document.createElement('div');
+  ghGroup.className = 'card-link-group';
+  ghGroup.innerHTML = '<div class="card-link-label">GitHub</div>';
+  const ghVal = document.createElement('div');
+  ghVal.className = 'card-link-static';
+  ghVal.textContent = data.github || '—';
+  ghGroup.appendChild(ghVal);
+
+  const demoGroup = document.createElement('div');
+  demoGroup.className = 'card-link-group';
+  demoGroup.innerHTML = '<div class="card-link-label">Demo / Vercel</div>';
+  const demoVal = document.createElement('div');
+  demoVal.className = 'card-link-static';
+  demoVal.textContent = data.demo || '—';
+  demoGroup.appendChild(demoVal);
+
+  links.appendChild(ghGroup);
+  links.appendChild(demoGroup);
+
+  const btns = document.createElement('div');
+  btns.style.cssText = 'display:flex;gap:.5rem;margin-top:.75rem';
+
+  if (data.github) {
+    const ghBtn = document.createElement('button');
+    ghBtn.className = 'card-link-btn';
+    ghBtn.textContent = '↗ github';
+    const ghUrl = data.github.startsWith('http') ? data.github : 'https://' + data.github;
+    ghBtn.onclick = () => window.open(ghUrl, '_blank');
+    btns.appendChild(ghBtn);
+  }
+  if (data.demo) {
+    const demoBtn = document.createElement('button');
+    demoBtn.className = 'card-link-btn';
+    demoBtn.textContent = '↗ demo';
+    const demoUrl = data.demo.startsWith('http') ? data.demo : 'https://' + data.demo;
+    demoBtn.onclick = () => window.open(demoUrl, '_blank');
+    btns.appendChild(demoBtn);
+  }
+
+  body.appendChild(title);
+  body.appendChild(desc);
+  body.appendChild(btns);
+
+  card.appendChild(imgDiv);
+  card.appendChild(body);
+  return card;
+}
+
+// ── Botão de adicionar card ──
+function makeAddBtn() {
+  const btn = document.createElement('div');
+  btn.className = 'add-card-btn';
+  btn.innerHTML = '<div class="add-icon">✦</div><div class="add-text">add project</div>';
+  btn.onclick = function() {
+    const grid = document.getElementById('projectsGrid');
+    grid.removeChild(btn);
+    grid.appendChild(createCard());
+    grid.appendChild(makeAddBtn());
+  };
+  return btn;
+}
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║                  ✦ CONFIGURAÇÕES ✦                       ║
+// ╠══════════════════════════════════════════════════════════╣
+// ║  Edite aqui sua foto de perfil e seus projetos.          ║
+// ║  Salve o arquivo e abra no navegador para ver.           ║
+// ╚══════════════════════════════════════════════════════════╝
+
+// ── FOTO DE PERFIL ──────────────────────────────────────────
+// Cole aqui o caminho ou URL da sua foto.
+// Exemplos:
+//   'img/foto.jpg'                        (pasta local img/)
+//   'https://i.imgur.com/abc123.png'      (link externo)
+//   'https://github.com/Vhcmorais.png'    (foto do GitHub)
+const AVATAR = 'https://github.com/Vhcmorais.png';
+
+// ── PROJETOS ────────────────────────────────────────────────
+// Campos:
+//   title   — nome do projeto
+//   desc    — descrição breve
+//   github  — 'github.com/usuario/repo'   (deixe '' para omitir)
+//   demo    — 'meu-app.vercel.app'        (deixe '' para omitir)
+//   img     — caminho ou URL da imagem    (deixe '' para placeholder)
+const PROJECTS = [
+  {
+    title: 'Psychology Professional Website',
+    desc: 'Professional psychology website designed to provide information about services, professional background, and contact channels in a welcoming and accessible digital environment.',
+    github: 'github.com/Vhcmorais/Web-Psico',
+    demo: 'https://psicologayasmin.com/',
+    img: './assets/psico_site.png',
+  },
+  {
+    title: 'App Web',
+    desc: 'Descrição breve do projeto — o que ele faz, qual tecnologia usa e qual problema resolve.',
+    github: 'github.com/Vhcmorais/repo',
+    demo: 'meu-app.vercel.app',
+    img: '',
+  },
+  {
+    title: 'Pesquisa Científica',
+    desc: 'Descrição breve do projeto — o que ele faz, qual tecnologia usa e qual problema resolve.',
+    github: 'github.com/Vhcmorais/repo',
+    demo: '',
+    img: '',
+  },
+];
+
+// ── Inicialização ────────────────────────────────────────────
+loadAvatar(AVATAR);
+const grid = document.getElementById('projectsGrid');
+PROJECTS.forEach(p => grid.appendChild(createCard(p)));
+grid.appendChild(makeAddBtn());
+
+// ── Links de contato ──
+document.getElementById('emailVal').addEventListener('input', function() {
+  document.getElementById('emailBtn').href = 'mailto:' + this.value;
+});
+document.getElementById('githubItem').addEventListener('click', function(e) {
+  if (e.target.tagName === 'INPUT') return;
+  const v = document.getElementById('githubVal').value;
+  if (v) window.open('https://' + v.replace('https://', ''), '_blank');
+});
+document.getElementById('linkedinItem').addEventListener('click', function(e) {
+  if (e.target.tagName === 'INPUT') return;
+  const v = document.getElementById('linkedinVal').value;
+  if (v) window.open('https://' + v.replace('https://', ''), '_blank');
+});
+document.getElementById('instagramItem').addEventListener('click', function(e) {
+  if (e.target.tagName === 'INPUT') return;
+  const v = document.getElementById('instagramVal').value;
+  if (v) window.open('https://instagram.com/' + v.replace('@', ''), '_blank');
+});
+</script>
+</body>
+</html>
