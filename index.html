@@ -275,6 +275,38 @@ footer{
   pointer-events:none;z-index:200;opacity:0;transition:opacity .3s;
 }
 
+/* ── Mobile Navigation ───────────────────────────── */
+@media (max-width: 768px){
+
+  nav{
+    padding: .8rem 1rem;
+    flex-direction: column;
+    gap: .8rem;
+  }
+
+  .nav-logo{
+    font-size: .9rem;
+    letter-spacing: .08em;
+    white-space: nowrap;
+  }
+
+  .nav-links{
+    width:100%;
+    justify-content:center;
+    gap:1rem;
+    flex-wrap:wrap;
+  }
+
+  .nav-links a{
+    font-size:.75rem;
+    letter-spacing:.05em;
+  }
+
+  main{
+    padding-top:110px;
+  }
+}
+
 </style>
 </head>
 <body>
