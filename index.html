@@ -629,20 +629,6 @@ function createCard(data = {}) {
   return card;
 }
 
-// ── Botão de adicionar card ──
-function makeAddBtn() {
-  const btn = document.createElement('div');
-  btn.className = 'add-card-btn';
-  btn.innerHTML = '<div class="add-icon">✦</div><div class="add-text">add project</div>';
-  btn.onclick = function() {
-    const grid = document.getElementById('projectsGrid');
-    grid.removeChild(btn);
-    grid.appendChild(createCard());
-    grid.appendChild(makeAddBtn());
-  };
-  return btn;
-}
-
 // ╔══════════════════════════════════════════════════════════╗
 // ║                  ✦ CONFIGURAÇÕES ✦                       ║
 // ╠══════════════════════════════════════════════════════════╣
@@ -686,6 +672,13 @@ const PROJECTS = [
     github: 'https://github.com/Vhcmorais/Projeto_Web__Stranger-Things',
     demo: 'https://stgthings.vercel.app/',
     img: './assets/stranger_things_site.png',
+  },
+  {
+    title: 'Web and Mobile Technologies - VestLink - UFU',
+    desc: 'Final project for the Web and Mobile Technologies course at UFU, involving the design and implementation of a responsive website with interactive features, demonstrating proficiency in front-end development and user experience principles.',
+    github: 'https://github.com/Vhcmorais/Projeto-TWM__VestLink',
+    demo: 'https://drive.google.com/file/d/1dILKk8BLbPsa_TGaGSdYresE0osS31Ms/view',
+    img: './assets/vestlink_site.png',
   },
 ];
 
